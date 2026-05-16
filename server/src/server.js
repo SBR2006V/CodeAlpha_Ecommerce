@@ -3,18 +3,26 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
+// import auth routes
+const authRoutes = require("./routes/authRoutes");
+
 dotenv.config();
 
 connectDB();
 
 const app = express();
 
+// middleware
 app.use(cors());
 app.use(express.json());
 
+// test route
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+
+// auth routes
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5000;
 
