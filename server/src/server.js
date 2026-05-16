@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const protect = require("./middleware/authMiddleware");
 
 // import auth routes
 const authRoutes = require("./routes/authRoutes");
@@ -19,6 +20,10 @@ app.use(express.json());
 // test route
 app.get("/", (req, res) => {
   res.send("API Running");
+});
+
+app.get("/api/profile", protect, (req, res) => {
+  res.json(req.user);
 });
 
 // auth routes
