@@ -107,10 +107,10 @@ http://localhost:5000
 ## Live Demo
 
 Frontend:
-https://your-frontend-url.onrender.com
+https://codealpha-ecommerce-1-vdcb.onrender.com
 
 Backend:
-https://your-backend-url.onrender.com
+https://codealpha-ecommerce-rppe.onrender.com
 
 ## 📸 Screenshots
 
