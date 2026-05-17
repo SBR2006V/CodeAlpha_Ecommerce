@@ -1,4 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -15,51 +18,47 @@ function Navbar() {
   };
 
   return (
-    <nav
-      style={{
-        padding: "20px",
-        display: "flex",
-        justifyContent: "space-between",
-        borderBottom: "1px solid gray",
-      }}
-    >
+    <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
       <Link to="/">
-        <h2>CodeAlpha Store</h2>
+        <h2 className="text-2xl font-bold text-blue-600">
+          CodeAlpha Store
+        </h2>
       </Link>
 
-      <div>
+      <div className="flex items-center gap-5">
         <Link
           to="/cart"
-          style={{
-            marginRight: "20px",
-          }}
+          className="font-medium hover:text-blue-600 transition"
         >
           Cart
         </Link>
 
         {user ? (
           <>
-            <span
-              style={{
-                marginRight: "20px",
-              }}
-            >
+            <span className="text-gray-700">
               Hello, {user.name}
             </span>
 
-            <button onClick={logout}>
+            <button
+              onClick={logout}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+            >
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link to="/login">
+            <Link
+              to="/login"
+              className="hover:text-blue-600 transition"
+            >
               Login
             </Link>
 
-            {" | "}
-
-            <Link to="/register">
+            <Link
+              to="/register"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
               Register
             </Link>
           </>

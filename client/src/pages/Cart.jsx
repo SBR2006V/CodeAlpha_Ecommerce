@@ -1,52 +1,134 @@
-import { useState } from "react";
+import {useEffect,useState,} from "react";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const [cart, setCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
+  const [cart, setCart] =
+    useState([]);
 
-  const removeFromCart = (id) => {
-    const updatedCart = cart.filter(
-      (item) => item._id !== id
-    );
+  useEffect(() => {
+    const savedCart =
+      JSON.parse(
+        localStorage.getItem(
+          "cart"
+        )
+      ) || [];
+
+    setCart(savedCart);
+  }, []);
+
+  const removeItem = (
+    indexToRemove
+  ) => {
+    const updatedCart =
+      cart.filter(
+        (_, index) =>
+          index !==
+          indexToRemove
+      );
 
     setCart(updatedCart);
 
     localStorage.setItem(
       "cart",
-      JSON.stringify(updatedCart)
+      JSON.stringify(
+        updatedCart
+      )
     );
   };
 
+  const totalPrice =
+    cart.reduce(
+      (acc, item) =>
+        acc + item.price,
+      0
+    );
+
+    const navigate = useNavigate();
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Your Cart</h1>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-4xl font-bold mb-8 text-center">
+        Your Cart
+      </h1>
+
+      <button
+  onClick={() => navigate("/")}
+  className="mb-8 bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition"
+>
+  ← Continue Shopping
+</button>
 
       {cart.length === 0 ? (
-        <p>Cart is empty</p>
+        <div className="text-center mt-20">
+          <h2 className="text-2xl text-gray-600">
+            Your cart is empty 🛒
+          </h2>
+        </div>
       ) : (
-        cart.map((item) => (
-          <div
-            key={item._id}
-            style={{
-              border: "1px solid gray",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          >
-            <h3>{item.name}</h3>
+        <>
+          <div className="max-w-4xl mx-auto space-y-6">
+            {cart.map(
+              (
+                item,
+                index
+              ) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl shadow-md p-5 flex justify-between items-center"
+                >
+                  <div className="flex items-center gap-5">
+                    <img
+                      src={
+                        item.image
+                      }
+                      alt={
+                        item.name
+                      }
+                      className="w-28 h-28 object-cover rounded-xl"
+                    />
 
-            <p>₹{item.price}</p>
+                    <div>
+                      <h2 className="text-2xl font-semibold">
+                        {
+                          item.name
+                        }
+                      </h2>
 
-            <button
-              onClick={() =>
-                removeFromCart(item._id)
-              }
-            >
-              Remove
-            </button>
+                      <p className="text-gray-500">
+                        ₹
+                        {
+                          item.price
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      removeItem(
+                        index
+                      )
+                    }
+                    className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg transition"
+                  >
+                    Remove
+                  </button>
+                </div>
+              )
+            )}
           </div>
-        ))
+
+          <div className="max-w-4xl mx-auto mt-8 bg-white rounded-2xl shadow-md p-6 flex justify-between items-center">
+            <h2 className="text-2xl font-bold">
+              Total:
+            </h2>
+
+            <h2 className="text-3xl font-bold text-green-600">
+              ₹
+              {totalPrice}
+            </h2>
+          </div>
+        </>
       )}
     </div>
   );
