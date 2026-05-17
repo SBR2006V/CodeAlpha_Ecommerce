@@ -91,7 +91,7 @@ function Cart() {
     );
 
     toast.success(
-      "Item removed"
+      "Product removed"
     );
   };
 
@@ -193,7 +193,7 @@ function Cart() {
                             item._id
                           )
                         }
-                        className="bg-red-500 text-white px-4 py-2 rounded-lg text-xl"
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg text-xl hover:bg-red-600"
                       >
                         -
                       </button>
@@ -210,7 +210,7 @@ function Cart() {
                             item._id
                           )
                         }
-                        className="bg-green-500 text-white px-4 py-2 rounded-lg text-xl"
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg text-xl hover:bg-green-600"
                       >
                         +
                       </button>
@@ -224,7 +224,7 @@ function Cart() {
                       item._id
                     )
                   }
-                  className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition"
+                  className="bg-red-600 text-white px-6 py-3 rounded-xl hover:bg-red-700 transition"
                 >
                   Remove
                 </button>
@@ -239,9 +239,7 @@ function Cart() {
 
             <h2 className="text-5xl font-bold text-green-600">
               ₹
-              {
-                totalPrice
-              }
+              {totalPrice}
             </h2>
           </div>
         </div>
