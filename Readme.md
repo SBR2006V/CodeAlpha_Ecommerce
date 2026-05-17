@@ -1,6 +1,6 @@
 # 🛒 CodeAlpha Store
 
-A full-stack ecommerce web application built using the MERN stack. Users can register, login, browse products, add items to cart, manage quantity, and remove products from the cart.
+A full-stack ecommerce web application built using the MERN stack. Users can register, login, browse products, add items to cart, manage quantity and remove products from the cart.
 
 ## 🚀 Features
 
@@ -49,7 +49,7 @@ Fullstack/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git clone https://github.com/SBR2006V/CodeAlpha_Ecommerce.git
 ```
 
 ### 2. Install Dependencies
