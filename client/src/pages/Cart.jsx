@@ -95,6 +95,18 @@ function Cart() {
     );
   };
 
+  const clearCart = () => {
+    localStorage.removeItem(
+      "cart"
+    );
+
+    setCart([]);
+
+    toast.success(
+      "Cart cleared"
+    );
+  };
+
   const totalPrice =
     cart.reduce(
       (total, item) =>
@@ -110,14 +122,28 @@ function Cart() {
         Your Cart
       </h1>
 
-      <button
-        onClick={() =>
-          navigate("/")
-        }
-        className="mb-8 bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
-      >
-        ← Continue Shopping
-      </button>
+      <div className="flex justify-between items-center mb-8">
+        <button
+          onClick={() =>
+            navigate("/")
+          }
+          className="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
+        >
+          ← Continue Shopping
+        </button>
+
+        {cart.length >
+          0 && (
+          <button
+            onClick={
+              clearCart
+            }
+            className="bg-red-500 text-white px-5 py-3 rounded-xl hover:bg-red-600 transition"
+          >
+            Clear Cart
+          </button>
+        )}
+      </div>
 
       {cart.length ===
       0 ? (
@@ -193,15 +219,15 @@ function Cart() {
                 </div>
 
                 <button
-  onClick={() => {
-    localStorage.removeItem("cart");
-    setCart([]);
-    toast.success("Cart cleared");
-  }}
-  className="bg-red-500 text-white px-5 py-2 rounded-lg"
->
-  Clear Cart
-</button>
+                  onClick={() =>
+                    removeItem(
+                      item._id
+                    )
+                  }
+                  className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition"
+                >
+                  Remove
+                </button>
               </div>
             )
           )}
