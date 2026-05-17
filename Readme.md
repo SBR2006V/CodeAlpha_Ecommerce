@@ -73,8 +73,8 @@ npm install
 Create a `.env` file inside the `server` folder:
 
 ```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+MONGO_URI=your_mongodb_connection_string   #Create an account in MongoDB (can make a free one) and get your connection string
+JWT_SECRET=your_secret_key  #Type your secret key there
 PORT=5000
 ```
 
