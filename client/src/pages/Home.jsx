@@ -48,9 +48,7 @@ function Home() {
     if (
       existingProduct
     ) {
-      existingProduct.quantity =
-        (existingProduct.quantity ||
-          1) + 1;
+      existingProduct.quantity += 1;
     } else {
       cart.push({
         ...product,

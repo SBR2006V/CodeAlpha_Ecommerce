@@ -1,7 +1,10 @@
-import {useEffect,useState,} from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Cart() {
+  const navigate = useNavigate();
+
   const [cart, setCart] =
     useState([]);
 
@@ -16,16 +19,9 @@ function Cart() {
     setCart(savedCart);
   }, []);
 
-  const removeItem = (
-    indexToRemove
+  const updateCart = (
+    updatedCart
   ) => {
-    const updatedCart =
-      cart.filter(
-        (_, index) =>
-          index !==
-          indexToRemove
-      );
-
     setCart(updatedCart);
 
     localStorage.setItem(
@@ -36,99 +32,193 @@ function Cart() {
     );
   };
 
+  const increaseQuantity = (
+    id
+  ) => {
+    const updatedCart =
+      cart.map((item) =>
+        item._id === id
+          ? {
+              ...item,
+              quantity:
+                item.quantity +
+                1,
+            }
+          : item
+      );
+
+    updateCart(
+      updatedCart
+    );
+  };
+
+  const decreaseQuantity = (
+    id
+  ) => {
+    const updatedCart =
+      cart
+        .map((item) =>
+          item._id === id
+            ? {
+                ...item,
+                quantity:
+                  item.quantity -
+                  1,
+              }
+            : item
+        )
+        .filter(
+          (item) =>
+            item.quantity > 0
+        );
+
+    updateCart(
+      updatedCart
+    );
+  };
+
+  const removeItem = (
+    id
+  ) => {
+    const updatedCart =
+      cart.filter(
+        (item) =>
+          item._id !== id
+      );
+
+    updateCart(
+      updatedCart
+    );
+
+    toast.success(
+      "Item removed"
+    );
+  };
+
   const totalPrice =
     cart.reduce(
-      (acc, item) =>
-        acc + item.price,
+      (total, item) =>
+        total +
+        item.price *
+          item.quantity,
       0
     );
 
-    const navigate = useNavigate();
-
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">
+      <h1 className="text-5xl font-bold text-center mb-6">
         Your Cart
       </h1>
 
       <button
-  onClick={() => navigate("/")}
-  className="mb-8 bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition"
->
-  ← Continue Shopping
-</button>
+        onClick={() =>
+          navigate("/")
+        }
+        className="mb-8 bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
+      >
+        ← Continue Shopping
+      </button>
 
-      {cart.length === 0 ? (
-        <div className="text-center mt-20">
-          <h2 className="text-2xl text-gray-600">
-            Your cart is empty 🛒
-          </h2>
-        </div>
+      {cart.length ===
+      0 ? (
+        <p className="text-center text-2xl text-gray-500 mt-20">
+          Your cart is
+          empty 🛒
+        </p>
       ) : (
-        <>
-          <div className="max-w-4xl mx-auto space-y-6">
-            {cart.map(
-              (
-                item,
-                index
-              ) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl shadow-md p-5 flex justify-between items-center"
-                >
-                  <div className="flex items-center gap-5">
-                    <img
-                      src={
-                        item.image
-                      }
-                      alt={
+        <div className="max-w-5xl mx-auto space-y-6">
+          {cart.map(
+            (item) => (
+              <div
+                key={
+                  item._id
+                }
+                className="bg-white rounded-3xl shadow-lg p-6 flex items-center justify-between"
+              >
+                <div className="flex items-center gap-6">
+                  <img
+                    src={
+                      item.image
+                    }
+                    alt={
+                      item.name
+                    }
+                    className="w-32 h-32 object-cover rounded-2xl"
+                  />
+
+                  <div>
+                    <h2 className="text-3xl font-bold">
+                      {
                         item.name
                       }
-                      className="w-28 h-28 object-cover rounded-xl"
-                    />
+                    </h2>
 
-                    <div>
-                      <h2 className="text-2xl font-semibold">
-                        {
-                          item.name
-                        }
-                      </h2>
+                    <p className="text-gray-500 text-xl mt-1">
+                      ₹
+                      {
+                        item.price
+                      }
+                    </p>
 
-                      <p className="text-gray-500">
-                        ₹
-                        {
-                          item.price
+                    <div className="flex items-center gap-4 mt-4">
+                      <button
+                        onClick={() =>
+                          decreaseQuantity(
+                            item._id
+                          )
                         }
-                      </p>
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg text-xl"
+                      >
+                        -
+                      </button>
+
+                      <span className="text-2xl font-semibold">
+                        {
+                          item.quantity
+                        }
+                      </span>
+
+                      <button
+                        onClick={() =>
+                          increaseQuantity(
+                            item._id
+                          )
+                        }
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg text-xl"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
-
-                  <button
-                    onClick={() =>
-                      removeItem(
-                        index
-                      )
-                    }
-                    className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg transition"
-                  >
-                    Remove
-                  </button>
                 </div>
-              )
-            )}
-          </div>
 
-          <div className="max-w-4xl mx-auto mt-8 bg-white rounded-2xl shadow-md p-6 flex justify-between items-center">
-            <h2 className="text-2xl font-bold">
+                <button
+                  onClick={() =>
+                    removeItem(
+                      item._id
+                    )
+                  }
+                  className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition"
+                >
+                  Remove
+                </button>
+              </div>
+            )
+          )}
+
+          <div className="bg-white rounded-3xl shadow-lg p-8 flex justify-between items-center">
+            <h2 className="text-4xl font-bold">
               Total:
             </h2>
 
-            <h2 className="text-3xl font-bold text-green-600">
+            <h2 className="text-5xl font-bold text-green-600">
               ₹
-              {totalPrice}
+              {
+                totalPrice
+              }
             </h2>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
