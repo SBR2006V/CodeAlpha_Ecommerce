@@ -1,13 +1,14 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend for CodeAlpha Store",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sourasish Biswas",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
@@ -20,8 +21,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
-  },
-  "scripts": {
-  "dev": "nodemon src/server.js"
-}
+  }
 }
