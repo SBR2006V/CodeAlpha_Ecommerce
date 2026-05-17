@@ -33,19 +33,15 @@ function Cart() {
   };
 
   const increaseQuantity = (
-    id
+    index
   ) => {
-    const updatedCart =
-      cart.map((item) =>
-        item._id === id
-          ? {
-              ...item,
-              quantity:
-                item.quantity +
-                1,
-            }
-          : item
-      );
+    const updatedCart = [
+      ...cart,
+    ];
+
+    updatedCart[
+      index
+    ].quantity += 1;
 
     updateCart(
       updatedCart
@@ -53,24 +49,30 @@ function Cart() {
   };
 
   const decreaseQuantity = (
-    id
+    index
   ) => {
-    const updatedCart =
-      cart
-        .map((item) =>
-          item._id === id
-            ? {
-                ...item,
-                quantity:
-                  item.quantity -
-                  1,
-              }
-            : item
-        )
-        .filter(
-          (item) =>
-            item.quantity > 0
-        );
+    const updatedCart = [
+      ...cart,
+    ];
+
+    if (
+      updatedCart[
+        index
+      ].quantity > 1
+    ) {
+      updatedCart[
+        index
+      ].quantity -= 1;
+    } else {
+      updatedCart.splice(
+        index,
+        1
+      );
+
+      toast.success(
+        "Product removed"
+      );
+    }
 
     updateCart(
       updatedCart
@@ -78,13 +80,16 @@ function Cart() {
   };
 
   const removeItem = (
-    id
+    index
   ) => {
-    const updatedCart =
-      cart.filter(
-        (item) =>
-          item._id !== id
-      );
+    const updatedCart = [
+      ...cart,
+    ];
+
+    updatedCart.splice(
+      index,
+      1
+    );
 
     updateCart(
       updatedCart
@@ -129,7 +134,8 @@ function Cart() {
           }
           className="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
         >
-          ← Continue Shopping
+          ← Continue
+          Shopping
         </button>
 
         {cart.length >
@@ -154,10 +160,13 @@ function Cart() {
       ) : (
         <div className="max-w-5xl mx-auto space-y-6">
           {cart.map(
-            (item) => (
+            (
+              item,
+              index
+            ) => (
               <div
                 key={
-                  item._id
+                  index
                 }
                 className="bg-white rounded-3xl shadow-lg p-6 flex items-center justify-between"
               >
@@ -190,7 +199,7 @@ function Cart() {
                       <button
                         onClick={() =>
                           decreaseQuantity(
-                            item._id
+                            index
                           )
                         }
                         className="bg-red-500 text-white px-4 py-2 rounded-lg text-xl hover:bg-red-600"
@@ -207,7 +216,7 @@ function Cart() {
                       <button
                         onClick={() =>
                           increaseQuantity(
-                            item._id
+                            index
                           )
                         }
                         className="bg-green-500 text-white px-4 py-2 rounded-lg text-xl hover:bg-green-600"
@@ -221,7 +230,7 @@ function Cart() {
                 <button
                   onClick={() =>
                     removeItem(
-                      item._id
+                      index
                     )
                   }
                   className="bg-red-600 text-white px-6 py-3 rounded-xl hover:bg-red-700 transition"
