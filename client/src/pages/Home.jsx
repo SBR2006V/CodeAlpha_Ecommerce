@@ -12,7 +12,7 @@ function Home() {
         try {
           const res =
             await API.get(
-              "/products"
+              "/api/products"
             );
 
           setProducts(
