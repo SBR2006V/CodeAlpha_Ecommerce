@@ -126,15 +126,20 @@ function Home() {
                 </p>
 
                 <button
-                  onClick={() =>
-                    addToCart(
-                      product
-                    )
-                  }
-                  className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition"
-                >
-                  Add To Cart
-                </button>
+  onClick={() => addToCart(product)}
+  disabled={product.stock === 0}
+  className={`w-full py-3 rounded-xl text-white transition
+  ${
+    product.stock === 0
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-black hover:bg-gray-800"
+  }`}
+>
+  {product.stock === 0
+    ? "Out of Stock"
+    : "Add To Cart"}
+</button>
+                
               </div>
             </div>
           )

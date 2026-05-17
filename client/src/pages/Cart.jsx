@@ -193,15 +193,15 @@ function Cart() {
                 </div>
 
                 <button
-                  onClick={() =>
-                    removeItem(
-                      item._id
-                    )
-                  }
-                  className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition"
-                >
-                  Remove
-                </button>
+  onClick={() => {
+    localStorage.removeItem("cart");
+    setCart([]);
+    toast.success("Cart cleared");
+  }}
+  className="bg-red-500 text-white px-5 py-2 rounded-lg"
+>
+  Clear Cart
+</button>
               </div>
             )
           )}
