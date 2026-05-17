@@ -32,7 +32,7 @@ function Login() {
       try {
         const res =
           await API.post(
-            "/auth/login",
+            "/api/auth/login",
             {
               email,
               password,
