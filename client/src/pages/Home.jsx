@@ -6,6 +6,9 @@ function Home() {
   const [products, setProducts] =
     useState([]);
 
+  const [loading, setLoading] =
+    useState(true);
+
   useEffect(() => {
     const fetchProducts =
       async () => {
@@ -19,8 +22,14 @@ function Home() {
             res.data
           );
         } catch (error) {
-          console.log(
-            error
+          console.log(error);
+
+          toast.error(
+            "Failed to load products"
+          );
+        } finally {
+          setLoading(
+            false
           );
         }
       };
@@ -31,6 +40,18 @@ function Home() {
   const addToCart = (
     product
   ) => {
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    if (!token) {
+      toast.error(
+        "Please login first"
+      );
+      return;
+    }
+
     const cart =
       JSON.parse(
         localStorage.getItem(
@@ -48,7 +69,9 @@ function Home() {
     if (
       existingProduct
     ) {
-      existingProduct.quantity += 1;
+      existingProduct.quantity =
+        (existingProduct.quantity ||
+          1) + 1;
     } else {
       cart.push({
         ...product,
@@ -71,6 +94,26 @@ function Home() {
       "Added to cart"
     );
   };
+
+  // Loading State
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center text-2xl font-semibold">
+        Loading products...
+      </div>
+    );
+  }
+
+  // Empty State
+  if (
+    products.length === 0
+  ) {
+    return (
+      <div className="min-h-screen flex justify-center items-center text-2xl font-semibold">
+        No products found
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
