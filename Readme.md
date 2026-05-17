@@ -104,23 +104,31 @@ Backend runs on:
 http://localhost:5000
 ```
 
+## Live Demo
+
+Frontend:
+https://your-frontend-url.onrender.com
+
+Backend:
+https://your-backend-url.onrender.com
+
 ## 📸 Screenshots
-
-### Home Page
-
-(Add screenshot here)
 
 ### Login Page
 
-(Add screenshot here)
+![Login Page](./screenshots/login.png)
 
 ### Register Page
 
-(Add screenshot here)
+![Register Page](./screenshots/register.png)
 
 ### Cart Page
 
-(Add screenshot here)
+![Cart Page](./screenshots/cart.png)
+
+### Products Page
+
+![Products Page](./screenshots/products.png)
 
 ## 🌐 Future Improvements
 
