@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import API from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [products, setProducts] =
@@ -8,6 +12,9 @@ function Home() {
 
   const [loading, setLoading] =
     useState(true);
+
+  const navigate =
+    useNavigate();
 
   useEffect(() => {
     const fetchProducts =
@@ -38,8 +45,12 @@ function Home() {
   }, []);
 
   const addToCart = (
+    e,
     product
   ) => {
+    // Prevent card click
+    e.stopPropagation();
+
     const token =
       localStorage.getItem(
         "token"
@@ -128,7 +139,12 @@ function Home() {
               key={
                 product._id
               }
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
+              onClick={() =>
+                navigate(
+                  `/product/${product._id}`
+                )
+              }
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden cursor-pointer"
             >
               <img
                 src={
@@ -175,8 +191,11 @@ function Home() {
                 </p>
 
                 <button
-                  onClick={() =>
+                  onClick={(
+                    e
+                  ) =>
                     addToCart(
+                      e,
                       product
                     )
                   }
