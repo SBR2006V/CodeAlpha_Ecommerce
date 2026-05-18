@@ -7,6 +7,8 @@ const protect = require("./middleware/authMiddleware");
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 
+const orderRoutes = require("./routes/orderRoutes");
+
 dotenv.config();
 
 connectDB();
@@ -27,6 +29,8 @@ app.use("/api/auth", authRoutes);
 
 // product routes
 app.use("/api/products", productRoutes);
+
+app.use("/api/orders", orderRoutes);
 
 // protected route
 app.get("/api/profile", protect, (req, res) => {
