@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 
-// create product
+// Create product
 const createProduct = async (req, res) => {
   try {
     const { name, description, price, image, category, stock } = req.body;
@@ -22,7 +22,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-// get all products
+// Get all products
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -35,7 +35,27 @@ const getProducts = async (req, res) => {
   }
 };
 
+// Get single product
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createProduct,
   getProducts,
+  getProductById,
 };
