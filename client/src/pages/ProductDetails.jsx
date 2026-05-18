@@ -1,10 +1,22 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+
 import toast from "react-hot-toast";
 import API from "../services/api";
 
 function ProductDetails() {
-  const { id } = useParams();
+  const { id } =
+    useParams();
+
+  const navigate =
+    useNavigate();
 
   const [product, setProduct] =
     useState(null);
@@ -25,6 +37,10 @@ function ProductDetails() {
           console.log(
             error
           );
+
+          toast.error(
+            "Failed to load product"
+          );
         }
       };
 
@@ -32,6 +48,21 @@ function ProductDetails() {
   }, [id]);
 
   const addToCart = () => {
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    if (!token) {
+      toast.error(
+        "Please login first"
+      );
+      navigate(
+        "/login"
+      );
+      return;
+    }
+
     const cart =
       JSON.parse(
         localStorage.getItem(
@@ -49,7 +80,9 @@ function ProductDetails() {
     if (
       existingProduct
     ) {
-      existingProduct.quantity += 1;
+      existingProduct.quantity =
+        (existingProduct.quantity ||
+          1) + 1;
     } else {
       cart.push({
         ...product,
@@ -62,6 +95,12 @@ function ProductDetails() {
       JSON.stringify(cart)
     );
 
+    window.dispatchEvent(
+      new Event(
+        "cartUpdated"
+      )
+    );
+
     toast.success(
       "Added to cart"
     );
@@ -69,15 +108,26 @@ function ProductDetails() {
 
   if (!product) {
     return (
-      <div className="text-center mt-20 text-2xl">
+      <div className="min-h-screen flex justify-center items-center text-2xl font-semibold">
         Loading...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex justify-center items-center">
-      <div className="bg-white rounded-3xl shadow-xl p-8 max-w-5xl w-full flex flex-col md:flex-row gap-10">
+    <div className="min-h-screen bg-gray-100 p-8">
+      {/* Back Button */}
+      <button
+        onClick={() =>
+          navigate("/")
+        }
+        className="mb-6 bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
+      >
+        ← Back to Products
+      </button>
+
+      {/* Product Card */}
+      <div className="bg-white rounded-3xl shadow-xl p-8 max-w-5xl mx-auto w-full flex flex-col md:flex-row gap-10">
         <img
           src={product.image}
           alt={product.name}
@@ -86,7 +136,9 @@ function ProductDetails() {
 
         <div className="flex flex-col justify-center">
           <h1 className="text-5xl font-bold mb-4">
-            {product.name}
+            {
+              product.name
+            }
           </h1>
 
           <p className="text-gray-600 text-lg mb-4">
@@ -97,7 +149,9 @@ function ProductDetails() {
 
           <h2 className="text-4xl font-bold text-green-600 mb-4">
             ₹
-            {product.price}
+            {
+              product.price
+            }
           </h2>
 
           <p className="text-lg mb-2">
