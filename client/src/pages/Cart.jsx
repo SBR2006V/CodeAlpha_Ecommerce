@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import API from "../services/api";
 
 function Cart() {
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const [cart, setCart] =
     useState([]);
@@ -120,6 +122,84 @@ function Cart() {
           item.quantity,
       0
     );
+
+  const placeOrder =
+    async () => {
+      try {
+        const token =
+          localStorage.getItem(
+            "token"
+          );
+
+        if (!token) {
+          toast.error(
+            "Please login first"
+          );
+
+          navigate(
+            "/login"
+          );
+
+          return;
+        }
+
+        const orderItems =
+          cart.map(
+            (
+              item
+            ) => ({
+              productId:
+                item._id,
+              name:
+                item.name,
+              image:
+                item.image,
+              price:
+                item.price,
+              quantity:
+                item.quantity,
+            })
+          );
+
+        await API.post(
+          "/api/orders",
+          {
+            items:
+              orderItems,
+            totalAmount:
+              totalPrice,
+          },
+          {
+            headers:
+              {
+                Authorization: `Bearer ${token}`,
+              },
+          }
+        );
+
+        localStorage.removeItem(
+          "cart"
+        );
+
+        setCart([]);
+
+        toast.success(
+          "Order placed successfully"
+        );
+
+        navigate(
+          "/my-orders"
+        );
+      } catch (error) {
+        console.log(
+          error
+        );
+
+        toast.error(
+          "Failed to place order"
+        );
+      }
+    };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -241,15 +321,27 @@ function Cart() {
             )
           )}
 
-          <div className="bg-white rounded-3xl shadow-lg p-8 flex justify-between items-center">
-            <h2 className="text-4xl font-bold">
-              Total:
-            </h2>
+          {/* Total + Place Order */}
+          <div className="bg-white rounded-3xl shadow-lg p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-4xl font-bold">
+                Total:
+              </h2>
 
-            <h2 className="text-5xl font-bold text-green-600">
-              ₹
-              {totalPrice}
-            </h2>
+              <h2 className="text-5xl font-bold text-green-600">
+                ₹
+                {totalPrice}
+              </h2>
+            </div>
+
+            <button
+              onClick={
+                placeOrder
+              }
+              className="w-full bg-green-600 text-white py-4 rounded-2xl text-xl font-semibold hover:bg-green-700 transition"
+            >
+              Place Order
+            </button>
           </div>
         </div>
       )}
