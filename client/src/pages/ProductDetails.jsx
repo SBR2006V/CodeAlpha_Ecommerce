@@ -15,7 +15,7 @@ function ProductDetails() {
         try {
           const res =
             await API.get(
-              `/products/${id}`
+              `/api/products/${id}`
             );
 
           setProduct(
