@@ -2,11 +2,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import toast from "react-hot-toast";
-import API from "../services/api";
+
 import {
   useNavigate,
 } from "react-router-dom";
+
+import toast from "react-hot-toast";
+import API from "../services/api";
 
 function MyOrders() {
   const [orders, setOrders] =
@@ -80,9 +82,24 @@ function MyOrders() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-5xl font-bold text-center mb-10">
-        My Orders
-      </h1>
+      
+      {/* Header */}
+      <div className="max-w-5xl mx-auto flex items-center justify-between mb-10">
+        <button
+          onClick={() =>
+            navigate("/")
+          }
+          className="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
+        >
+          ← Back
+        </button>
+
+        <h1 className="text-5xl font-bold">
+          My Orders
+        </h1>
+
+        <div className="w-20"></div>
+      </div>
 
       {orders.length ===
       0 ? (
